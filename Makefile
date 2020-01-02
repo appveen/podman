@@ -17,9 +17,9 @@ IMAGE_NAME = $(IMAGE_NAME_PREFIX)/podman
 RUN = docker run --rm --privileged -v /tmp/podman:/var/lib/containers
 PODMAN_RUN = $(RUN) $(IMAGE_NAME):latest
 
-build: build/podman build/podman-remote
+build: build/podman
 
-build/podman build/podman-remote:
+build/podman:
 	sed 's/<BIN>/$(@F)/g' Dockerfile | docker build -f - \
 		--build-arg CREATED=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
 		--build-arg REVISION=$(GIT_COMMIT) \
@@ -32,9 +32,9 @@ build/podman build/podman-remote:
 		-t $(IMAGE_NAME_PREFIX)/$(@F):$(IMAGE_TAG) \
 		-t $(IMAGE_NAME_PREFIX)/$(@F):latest .
 
-push: push/podman push/podman-remote
+push: push/podman
 
-push/podman push/podman-remote:
+push/podman:
 	docker push $(IMAGE_NAME_PREFIX)/$(@F):$(IMAGE_TAG)
 	if [ -n "$(PUSH_LATEST_TAG)" ]; then docker push $(IMAGE_NAME_PREFIX)/$(@F):latest; fi
 
@@ -60,7 +60,6 @@ dive:
 	build/podman-remote \
 	push \
 	push/podman\
-	push/podman-remote \
 	run \
 	version \
 	info \
