@@ -9,13 +9,13 @@ RUN apk --no-cache add bash btrfs-progs-dev build-base device-mapper git glib-de
 RUN git config --global advice.detachedHead false
 
 RUN git clone --branch v$CONMON_VERSION https://github.com/containers/conmon $GOPATH/src/github.com/containers/conmon && \
-    cd $GOPATH/src/github.com/containers/conmon && make
+  cd $GOPATH/src/github.com/containers/conmon && make
 RUN git clone --branch v$RUNC_VERSION https://github.com/opencontainers/runc $GOPATH/src/github.com/opencontainers/runc && \
-    cd $GOPATH/src/github.com/opencontainers/runc && EXTRA_LDFLAGS="-s -w" make BUILDTAGS="seccomp apparmor selinux ambient"
+  cd $GOPATH/src/github.com/opencontainers/runc && EXTRA_LDFLAGS="-s -w" make BUILDTAGS="seccomp apparmor selinux ambient"
 RUN git clone --branch v$CNI_PLUGINS_VERSION https://github.com/containernetworking/plugins $GOPATH/src/github.com/containernetworking/plugins && \
-    cd $GOPATH/src/github.com/containernetworking/plugins && GOFLAGS="-ldflags=-s -ldflags=-w" ./build_linux.sh
+  cd $GOPATH/src/github.com/containernetworking/plugins && GOFLAGS="-ldflags=-s -ldflags=-w" ./build_linux.sh
 RUN git clone --branch v$PODMAN_VERSION https://github.com/containers/libpod $GOPATH/src/github.com/containers/libpod && \
-    cd $GOPATH/src/github.com/containers/libpod && LDFLAGS="-s -w" make varlink_generate <BIN> BUILDTAGS="selinux seccomp apparmor"
+  cd $GOPATH/src/github.com/containers/libpod && LDFLAGS="-s -w" make varlink_generate <BIN> BUILDTAGS="selinux seccomp apparmor"
 
 FROM alpine:3.10.3
 
@@ -24,14 +24,14 @@ ARG REVISION
 ARG PODMAN_VERSION
 ARG IMAGE_NAME
 
-LABEL maintainer="Marshall Ford <inbox@marshallford.me>"
+LABEL maintainer="appveen <developer@appveen.com>"
 
 LABEL org.opencontainers.image.created=$CREATED \
-      org.opencontainers.image.revision=$REVISION \
-      org.opencontainers.image.version=$PODMAN_VERSION \
-      org.opencontainers.image.title=$IMAGE_NAME \
-      org.opencontainers.image.source="https://github.com/marshallford/podman" \
-      org.opencontainers.image.url="https://podman.io"
+  org.opencontainers.image.revision=$REVISION \
+  org.opencontainers.image.version=$PODMAN_VERSION \
+  org.opencontainers.image.title=$IMAGE_NAME \
+  org.opencontainers.image.source="https://github.com/appveen/podman" \
+  org.opencontainers.image.url="https://podman.io"
 
 RUN apk --no-cache add device-mapper gpgme ip6tables libseccomp libselinux ostree
 
