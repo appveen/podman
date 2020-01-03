@@ -29,7 +29,7 @@ build/podman:
 		--build-arg PODMAN_VERSION=$(PODMAN_VERSION) \
 		--build-arg IMAGE_NAME=$(IMAGE_NAME_PREFIX)/$(@F) \
 		-t $(IMAGE_NAME_PREFIX)/$(@F):$(GIT_COMMIT) \
-		-t $(IMAGE_NAME_PREFIX)/$(@F):$(IMAGE_TAG) \
+		-t $(IMAGE_NAME_PREFIX)/$(@F):$(PODMAN_VERSION) \
 		-t $(IMAGE_NAME_PREFIX)/$(@F):latest .
 
 push: push/podman
